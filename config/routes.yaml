@@ -1,0 +1,7 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+create:
+    path: /api/v1/document
+    controller: App\Controller\DefaultController::test
