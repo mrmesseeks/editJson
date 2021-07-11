@@ -3,26 +3,25 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         git \
         zlib1g-dev \
         libxml2-dev \
+        libpq-dev \
         libpng-dev \
-        libzip-dev \
         vim curl debconf subversion git apt-transport-https apt-utils \
         build-essential locales acl mailutils wget nodejs zip unzip \
         gnupg gnupg1 gnupg2 \
         sudo \
         ssh \
     && docker-php-ext-install \
-        pdo_mysql \
+        pdo_pgsql \
         soap \
-        zip \
         opcache \
         gd \
         intl
 
-COPY ./opcache.ini /usr/local/etc/php/conf.d/
+COPY ./opcache.ini /usr/local/etc/php/conf.d/wq
 COPY ./custom.ini /usr/local/etc/php/conf.d/
 
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
-RUN composer self-update 1.9.0
+RUN composer self-update
 
 RUN wget --no-check-certificate https://phar.phpunit.de/phpunit-6.5.3.phar && \
     mv phpunit*.phar phpunit.phar && \

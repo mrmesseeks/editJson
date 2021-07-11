@@ -8,31 +8,38 @@ services:
 #    environment: # You can use this section to set environment variables. But you can also use the .env file.
 #      - DATABASE_URL=mysql://root:root@db/docker_sf
     volumes:
-      - ./:/var/www/project/:cached # Location of the project for php-fpm. Note this should be the same for NGINX.*
+#      - ./:/var/www/project/:cached # Location of the project for php-fpm. Note this should be the same for NGINX.*
+      - .:/var/www/project
     networks:
       - symfony # Docker containers (services) that need to connect to each other should be on the same network.
+    environment:
+      - DB_HOST=db
+      - DB_NAME=test
+      - DB_USER=test
+      - DB_PASSWORD=qwerty
+      - DATABASE_URL=pgsql://test:qwerty@db:5432/test
+
   nginx:
     build:
       context: ./docker/nginx
       dockerfile: Dockerfile
     volumes:
-      - ./:/var/www/project/:cached
+#      - ./:/var/www/project/:cached
+      - .:/var/www/project
     ports:
       - 80:80 # Ports that are exposed, you can connect to port 8001 to port 80 of the container.
     networks:
       - symfony
-#  db: #address
-#    image: mariadb:10.2.29
-#    ports:
-#      - "3317:3306" #outside:inside docker container from-within
-#    environment:
-#      - MYSQL_DATABASE=docker_sf
-#      - MYSQL_ROOT_PASSWORD=root
-#    volumes:
-#      - persistent:/var/lib/mysql
-#      - ./docker/build/db/:/docker-entrypoint-initdb.d/
-#    networks:
-#    - symfony
+  db: #address
+    image: postgres:13.3-alpine
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_DB=test
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=qwerty
+    networks:
+    - symfony
 
 networks:
   symfony:

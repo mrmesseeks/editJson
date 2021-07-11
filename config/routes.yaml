@@ -1,7 +1,19 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+create_document:
+  path: /api/v1/document
+  controller: App\Api\Controller\DocumentController::createDocument
+  methods: [ POST ]
 
-create:
-    path: /api/v1/document
-    controller: App\Controller\DefaultController::test
+update_document:
+  path: /api/v1/document/{id}
+  controller: App\Api\Controller\DocumentController::updateDocument
+  methods: [ PATCH ]
+
+publish_document:
+  path: /api/v1/document/{id}/publish
+  controller: App\Api\Controller\DocumentController::publishDocument
+  methods: [ POST ]
+
+get_document:
+  path: /api/v1/document
+  controller: App\Api\Controller\DocumentController::getDocument
+  methods: [ GET ]
